@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
-import render from './view'
+import render from './view';
 
 const app = () => {
   console.log('Hello World!');
@@ -8,7 +8,7 @@ const app = () => {
   const initialState = {
     rssForm: {
       // valid: true,
-      state: 'valid',  // filling valid invalid
+      state: 'valid', // filling valid invalid
       error: null,
       processError: null,
       fields: {
@@ -17,9 +17,8 @@ const app = () => {
     },
     feeds: [],
     posts: [],
-    rssUrls: ['https://ru.hexlet.io/lessons.rss',],
+    rssUrls: ['https://ru.hexlet.io/lessons.rss'],
   };
-
 
   const schema = yup
     .string()
@@ -28,9 +27,8 @@ const app = () => {
     .url('Ссылка должна быть действительным URL')
     .notOneOf(initialState.rssUrls, 'RSS уже существует');
 
-  const validate = (inputUrl, state) => {
-    // return schema.validate(inputUrl).then((value) => console.log(value)).catch((e) => (e.message));
-    return schema
+  const validate = (inputUrl, state) =>
+    schema
       .validate(inputUrl)
       .then(() => {
         state.rssForm.state = 'valid';
@@ -41,8 +39,6 @@ const app = () => {
         console.log(error.message);
         state.rssForm.state = 'invalid';
       });
-  };
-
   const elements = {
     form: document.querySelector('form.rss-form'),
     input: document.getElementById('url-input'),
@@ -64,8 +60,6 @@ const app = () => {
     console.log('url', url);
     validate(url, state);
   });
-
 };
 
 export default app;
-

@@ -1,9 +1,8 @@
 const renderError = ({ feedbackEl }, error) => {
   if (error) {
-    console.log('errorRender', error)
+    console.log('errorRender', error);
     feedbackEl.textContent = error;
   }
-  return;
 };
 const handleState = (elements, state) => {
   switch (state) {
