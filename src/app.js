@@ -8,7 +8,7 @@ const app = () => {
   const initialState = {
     rssForm: {
       // valid: true,
-      state: 'valid', // filling valid invalid
+      state: 'filling', // filling valid invalid
       error: null,
       processError: null,
       fields: {
@@ -33,6 +33,7 @@ const app = () => {
       .then(() => {
         state.rssForm.state = 'valid';
         state.rssForm.error = null;
+        state.rssForm.state = 'filling';
       })
       .catch((error) => {
         state.rssForm.error = error.message;

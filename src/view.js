@@ -7,8 +7,16 @@ const renderError = ({ feedbackEl }, error) => {
 const handleState = (elements, state) => {
   switch (state) {
     case 'valid':
+      console.log(state);
       elements.input.classList.remove('is-invalid');
       elements.feedbackEl.innerHTML = '';
+      // elements.form.reset();
+      // elements.input.focus();
+      break;
+    case 'filling':
+      console.log(state);
+      // elements.input.classList.remove('is-invalid');
+      // elements.feedbackEl.innerHTML = '';
       elements.form.reset();
       elements.input.focus();
       break;
