@@ -1,9 +1,19 @@
 import * as yup from 'yup';
 import onChange from 'on-change';
+import i18next from 'i18next';
+import resources from './locales/index.js';
 import render from './view';
 
-const app = () => {
+const app = async () => {
   console.log('Hello World!');
+
+  const defaultLanguage = 'ru';
+  const i18nextInstance = i18next.createInstance();
+  await i18nextInstance.init({
+    lng: defaultLanguage,
+    debug: false,
+    resources,
+  });
 
   const initialState = {
     rssForm: {
@@ -23,9 +33,9 @@ const app = () => {
   const schema = yup
     .string()
     .trim()
-    .required('Поле должно быть заполнено')
-    .url('Ссылка должна быть действительным URL')
-    .notOneOf(initialState.rssUrls, 'RSS уже существует');
+    .required(i18nextInstance.t('form.feedback.required'))
+    .url(i18nextInstance.t('form.feedback.invalidUrl'))
+    .notOneOf(initialState.rssUrls, i18nextInstance.t('form.feedback.notOneOf'));
 
   const validate = (inputUrl, state) =>
     schema
