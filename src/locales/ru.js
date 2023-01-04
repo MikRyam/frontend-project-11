@@ -11,13 +11,17 @@ export default {
         invalidUrl: 'Ссылка должна быть валидным URL',
         invalidRss: 'Ресурс не содержит валидный RSS',
         notOneOf: 'RSS уже существует',
-        valid: 'RSS успешно загружен',
-        loadingRss: 'Идет загрузка',
+        success: 'RSS успешно загружен',
+        loading: 'Идет загрузка',
         networkError: 'Ошибка сети',
       },
     },
-    postsTitle: 'Посты',
-    postButton: 'Просмотр',
-    feedsTitle: 'Фиды',
+    posts: {
+      title: 'Посты',
+      button: 'Просмотр',
+    },
+    feeds: {
+      title: 'Фиды',
+    },
   },
 };

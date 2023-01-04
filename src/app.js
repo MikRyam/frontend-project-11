@@ -1,8 +1,8 @@
-import * as yup from 'yup';
 import onChange from 'on-change';
 import i18next from 'i18next';
 import resources from './locales/index.js';
 import render from './view';
+import validate from './validate';
 
 const app = async () => {
   console.log('Hello World!');
@@ -18,38 +18,20 @@ const app = async () => {
   const initialState = {
     rssForm: {
       // valid: true,
-      state: 'filling', // filling valid invalid
+      state: 'ready', // ready, filling, valid, invalid
       error: null,
-      processError: null,
       fields: {
         url: '',
       },
     },
-    feeds: [],
-    posts: [],
-    rssUrls: ['https://ru.hexlet.io/lessons.rss'],
+    fetchingData: {
+      state: 'waiting', // waiting, loading, success, failed, networkError
+      feedback: null,
+    },
+    rssFeeds: [],
+    rssPosts: [],
   };
 
-  const schema = yup
-    .string()
-    .trim()
-    .required(i18nextInstance.t('form.feedback.required'))
-    .url(i18nextInstance.t('form.feedback.invalidUrl'))
-    .notOneOf(initialState.rssUrls, i18nextInstance.t('form.feedback.notOneOf'));
-
-  const validate = (inputUrl, state) =>
-    schema
-      .validate(inputUrl)
-      .then(() => {
-        state.rssForm.state = 'valid';
-        state.rssForm.error = null;
-        state.rssForm.state = 'filling';
-      })
-      .catch((error) => {
-        state.rssForm.error = error.message;
-        console.log(error.message);
-        state.rssForm.state = 'invalid';
-      });
   const elements = {
     form: document.querySelector('form.rss-form'),
     input: document.getElementById('url-input'),
@@ -62,14 +44,15 @@ const app = async () => {
     readAllModalButton: document.querySelector('#modal a.full-article'),
   };
 
-  const state = onChange(initialState, render(elements, initialState));
+  const state = onChange(initialState, render(elements, initialState, i18nextInstance));
 
   elements.form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    state.fetchingData.state = 'waiting';
     const formData = new FormData(e.target);
     const url = formData.get('url');
     console.log('url', url);
-    validate(url, state);
+    await validate(url, state);
   });
 };
 

@@ -11,13 +11,17 @@ export default {
         invalidUrl: 'invalid URL',
         invalidRss: 'invalid RSS',
         notOneOf: 'RSS already exists',
-        valid: 'RSS uploaded successfully',
-        loadingRss: 'Loading...',
+        success: 'RSS uploaded successfully',
+        loading: 'Loading...',
         networkError: 'Network error',
       },
     },
-    postsTitle: 'Posts',
-    postButton: 'Read',
-    feedsTitle: 'Feeds',
+    posts: {
+      title: 'Posts',
+      button: 'Read',
+    },
+    feeds: {
+      title: 'Feeds',
+    },
   },
 };
