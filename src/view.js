@@ -151,7 +151,7 @@ const renderViewedPosts = (viewedPostIds) => {
   postElement.classList.add('fw-normal', 'link-secondary');
 };
 
-const render = (elements, initialState, i18nextInstance) => (path, value, prevValue) => {
+const render = (elements, initialState, i18nextInstance) => (path, value) => {
   switch (path) {
     case 'rssForm.state':
       renderState(elements, value);
