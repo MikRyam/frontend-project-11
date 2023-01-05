@@ -7,7 +7,7 @@ export default {
       inputPlaceHolder: 'Ссылка RSS',
       addButton: 'Добавить',
       feedback: {
-        required: 'Поле должно быть заполнено',
+        required: 'Не должно быть пустым',
         invalidUrl: 'Ссылка должна быть валидным URL',
         invalidRss: 'Ресурс не содержит валидный RSS',
         notOneOf: 'RSS уже существует',
