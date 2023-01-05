@@ -42,6 +42,12 @@ const app = async () => {
     },
     rssFeeds: [],
     rssPosts: [],
+    uiState: {
+      viewedPostIds: new Set(),
+    },
+    modal: {
+      post: null,
+    },
   };
 
   const elements = {
@@ -52,13 +58,17 @@ const app = async () => {
     postsContainer: document.querySelector('.posts'),
     feedsContainer: document.querySelector('.feeds'),
     modalEl: document.getElementById('modal'),
+    modalTitle: document.querySelector('.modal-title'),
+    modalBody: document.querySelector('.modal-body'),
     closeModalButtons: document.querySelectorAll('#modal button[data-bs-dismiss="modal"]'),
     readAllModalButton: document.querySelector('#modal a.full-article'),
   };
 
   const state = onChange(initialState, render(elements, initialState, i18nextInstance));
 
-  const { fetchingData, rssForm } = state;
+  const {
+    fetchingData, rssForm, modal, rssPosts, uiState,
+  } = state;
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -85,6 +95,17 @@ const app = async () => {
         rssForm.state = 'invalid';
         fetchingData.state = 'failed';
       });
+  });
+
+  elements.modalEl.addEventListener('show.bs.modal', (e) => {
+    const button = e.relatedTarget;
+    const selectedId = button.getAttribute('data-bs-id');
+    const selectedPost = rssPosts.find(({ id }) => id === selectedId);
+    if (selectedPost) {
+      selectedPost.viewed = true;
+      uiState.viewedPostIds.add(selectedId);
+      modal.post = selectedPost;
+    }
   });
 
   setTimeout(() => updatePosts(state, refreshTime), refreshTime);

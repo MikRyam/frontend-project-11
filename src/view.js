@@ -112,7 +112,8 @@ const renderPosts = ({ postsContainer }, value, i18nextInstance) => {
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
     const a = document.createElement('a');
     a.setAttribute('href', post.link);
-    a.classList.add(post.viewed ? ['fw-normal', 'link-secondary'] : 'fw-bold');
+    post.viewed ? a.classList.add('fw-normal', 'link-secondary') : a.classList.add('fw-bold');
+    // a.classList.add(post.viewed ? ['fw-normal', 'link-secondary'] : 'fw-bold');
     a.setAttribute('data-id', post.id);
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
@@ -137,6 +138,19 @@ const renderPosts = ({ postsContainer }, value, i18nextInstance) => {
   postsContainer.append(cardBorder);
 };
 
+const renderModal = ({ modalTitle, modalBody, readAllModalButton }, post) => {
+  modalTitle.textContent = post?.title;
+  modalBody.textContent = post?.description;
+  readAllModalButton.setAttribute('href', post?.link);
+};
+
+const renderViewedPosts = (viewedPostIds) => {
+  const lastId = [...viewedPostIds].at(-1);
+  const postElement = document.querySelector(`[data-id="${lastId}"]`);
+  postElement.classList.remove('fw-bold');
+  postElement.classList.add('fw-normal', 'link-secondary');
+};
+
 const render = (elements, initialState, i18nextInstance) => (path, value, prevValue) => {
   switch (path) {
     case 'rssForm.state':
@@ -153,6 +167,12 @@ const render = (elements, initialState, i18nextInstance) => (path, value, prevVa
       break;
     case 'rssPosts':
       renderPosts(elements, value, i18nextInstance);
+      break;
+    case 'modal.post':
+      renderModal(elements, value);
+      break;
+    case 'uiState.viewedPostIds':
+      renderViewedPosts(value);
       break;
     default:
       break;

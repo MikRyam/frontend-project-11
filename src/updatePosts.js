@@ -9,9 +9,9 @@ const updatePosts = (state, refreshTime) => {
     .then((response) => {
       const { posts } = parseData(response.data.contents);
       const existedPostLinks = rssPosts.map((post) => post.link);
-      const newPosts = posts.filter((post) => !existedPostLinks.includes(post.link));
+      let newPosts = posts.filter((post) => !existedPostLinks.includes(post.link));
       if (newPosts.length > 0) {
-        normalizePostsData(newPosts, feed.id);
+        newPosts = normalizePostsData(newPosts, feed.id);
         rssPosts.push(...newPosts);
         console.log(rssPosts);
       }
