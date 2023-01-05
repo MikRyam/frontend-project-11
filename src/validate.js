@@ -1,8 +1,7 @@
 import * as yup from 'yup';
-import fetchRssData from './fetchRssData';
 
 const validate = (inputUrl, state) => {
-  const { rssForm, rssFeeds } = state;
+  const { rssFeeds } = state;
 
   yup.setLocale({
     mixed: {
@@ -19,20 +18,9 @@ const validate = (inputUrl, state) => {
     .trim()
     .required()
     .url()
-    .notOneOf(rssFeeds.map(({ url }) => url));
+    .notOneOf(rssFeeds.map(({ link }) => link));
 
-  return schema
-    .validate(inputUrl)
-    .then(() => {
-      rssForm.state = 'valid';
-      rssForm.error = null;
-      fetchRssData(inputUrl, state);
-    })
-    .catch((error) => {
-      rssForm.error = error.message;
-      console.log(error.message);
-      rssForm.state = 'invalid';
-    });
+  return schema.validate(inputUrl);
 };
 
 export default validate;

@@ -1,6 +1,7 @@
 const renderError = ({ feedbackEl }, error, i18nextInstance) => {
   if (error) {
     console.log('errorRender', error);
+    feedbackEl.classList.add('text-danger');
     feedbackEl.textContent = i18nextInstance.t(error);
   }
 };
@@ -27,9 +28,10 @@ const renderState = (elements, state) => {
 };
 
 const renderFetchingDataFeedback = ({ feedbackEl }, value, i18nextInstance) => {
-  switch (value) { // waiting, loading, loaded, failed
+  switch (value) { // waiting, loading, success, failed
     case 'waiting':
       feedbackEl.classList.remove('text-success');
+      feedbackEl.classList.remove('text-warning');
       feedbackEl.classList.add('text-danger');
       feedbackEl.innerHTML = '';
       console.log(value);
@@ -37,6 +39,7 @@ const renderFetchingDataFeedback = ({ feedbackEl }, value, i18nextInstance) => {
     case 'loading':
       feedbackEl.classList.remove('text-success');
       feedbackEl.classList.remove('text-danger');
+      feedbackEl.classList.add('text-warning');
       feedbackEl.textContent = i18nextInstance.t('form.feedback.loading');
       // feedbackEl.innerHTML = '';
       console.log(value);
@@ -44,20 +47,15 @@ const renderFetchingDataFeedback = ({ feedbackEl }, value, i18nextInstance) => {
     case 'failed':
       console.log(value);
       feedbackEl.classList.remove('text-success');
+      feedbackEl.classList.remove('text-warning');
       feedbackEl.classList.add('text-danger');
-      feedbackEl.textContent = i18nextInstance.t('form.feedback.invalidRss');
       break;
     case 'success':
       console.log(value);
       feedbackEl.classList.remove('text-danger');
+      feedbackEl.classList.remove('text-warning');
       feedbackEl.classList.add('text-success');
       feedbackEl.textContent = i18nextInstance.t('form.feedback.success');
-      break;
-    case 'networkError':
-      console.log(value);
-      feedbackEl.classList.remove('text-success');
-      feedbackEl.classList.add('text-danger');
-      feedbackEl.textContent = i18nextInstance.t('form.feedback.networkError');
       break;
     default:
       // https://ru.hexlet.io/blog/posts/sovershennyy-kod-defolty-v-svitchah
