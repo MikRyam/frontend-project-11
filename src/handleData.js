@@ -15,7 +15,6 @@ const handleData = (data, state, url) => {
   state.rssFeeds.push({ id: feedId, link: url, ...feed });
   const postsNormalized = normalizePostsData(posts, feedId);
   state.rssPosts.push(...postsNormalized);
-  console.log(state.rssPosts);
 };
 
 export default handleData;

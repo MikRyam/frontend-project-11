@@ -13,7 +13,6 @@ const updatePosts = (state, refreshTime) => {
       if (newPosts.length > 0) {
         newPosts = normalizePostsData(newPosts, feed.id);
         rssPosts.push(...newPosts);
-        console.log(rssPosts);
       }
     }));
 

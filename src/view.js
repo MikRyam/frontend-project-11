@@ -101,7 +101,6 @@ const renderPosts = ({ postsContainer }, value, i18nextInstance) => {
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
     const a = document.createElement('a');
     a.setAttribute('href', post.link);
-    // post.viewed ? a.classList.add('fw-normal', 'link-secondary') : a.classList.add('fw-bold');
     a.classList.add(post.viewed ? ['fw-normal', 'link-secondary'] : 'fw-bold');
     a.setAttribute('data-id', post.id);
     a.setAttribute('target', '_blank');

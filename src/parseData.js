@@ -2,7 +2,6 @@ const parseData = (contentData) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(contentData, 'text/xml');
   const parseError = doc.querySelector('parsererror');
-  console.log(parseError);
 
   if (parseError) {
     const error = new Error(parseError.textContent);
