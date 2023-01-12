@@ -39,7 +39,7 @@ export const parseData = (contentData) => {
   return { posts, feed };
 };
 
-export const normalizePostsData = (posts, feedId) => posts.map(({ title, description, link }) => ({
+const normalizePostsData = (posts, feedId) => posts.map(({ title, description, link }) => ({
   id: uuidv4(),
   feedId,
   title,
