@@ -20,10 +20,10 @@ You need to have installed actual versions of **Node.js** and **npm** packages.
 To see if you already have **Node.js** and **npm** installed and check the installed version,  
 run the following commands:
 
-    ```bash
-    node -v
-    npm -v
-    ```
+```bash
+node -v
+ npm -v
+```
 
 ---
 
