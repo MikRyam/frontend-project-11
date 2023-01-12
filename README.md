@@ -22,7 +22,7 @@ run the following commands:
 
 ```bash
 node -v
- npm -v
+npm -v
 ```
 
 ---
