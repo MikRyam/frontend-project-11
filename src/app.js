@@ -1,13 +1,38 @@
 import onChange from 'on-change';
 import i18next from 'i18next';
 import axios from 'axios';
+import * as yup from 'yup';
 import resources from './locales/index.js';
 import render from './view';
-import validate from './validate';
-import fetchData from './fetchData';
-import parseData from './parseData';
-import handleData from './handleData';
-import updatePosts from './updatePosts';
+import {
+  fetchData,
+  parseData,
+  handleData,
+  updatePosts,
+} from './getRss';
+
+const validate = (inputUrl, state) => {
+  const { rssFeeds } = state;
+
+  yup.setLocale({
+    mixed: {
+      required: 'form.feedback.required',
+      notOneOf: 'form.feedback.notOneOf',
+    },
+    string: {
+      url: 'form.feedback.invalidUrl',
+    },
+  });
+
+  const schema = yup
+    .string()
+    .trim()
+    .required()
+    .url()
+    .notOneOf(rssFeeds.map(({ link }) => link));
+
+  return schema.validate(inputUrl);
+};
 
 const handleError = (error) => {
   if (error.isParsingError) {
@@ -20,8 +45,6 @@ const handleError = (error) => {
 };
 
 const app = async () => {
-  console.log('Hello World!');
-
   const refreshTime = 5000;
 
   const defaultLanguage = 'ru';
@@ -67,7 +90,11 @@ const app = async () => {
   const state = onChange(initialState, render(elements, initialState, i18nextInstance));
 
   const {
-    fetchingData, rssForm, modal, rssPosts, uiState,
+    fetchingData,
+    rssForm,
+    modal,
+    rssPosts,
+    uiState,
   } = state;
 
   elements.form.addEventListener('submit', (e) => {
@@ -83,14 +110,12 @@ const app = async () => {
         return fetchData(url);
       })
       .then((response) => {
-        console.log(response.data.contents);
         const data = parseData(response.data.contents);
         handleData(data, state, url);
         fetchingData.state = 'success';
         rssForm.state = 'ready';
       })
       .catch((error) => {
-        // rssForm.error = error.message;
         rssForm.error = handleError(error);
         rssForm.state = 'invalid';
         fetchingData.state = 'failed';
