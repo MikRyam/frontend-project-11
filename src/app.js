@@ -11,9 +11,7 @@ import {
   updatePosts,
 } from './getRss';
 
-const validate = (inputUrl, state) => {
-  const { rssFeeds } = state;
-
+const validate = (inputUrl, feeds) => {
   yup.setLocale({
     mixed: {
       required: 'form.feedback.required',
@@ -29,7 +27,7 @@ const validate = (inputUrl, state) => {
     .trim()
     .required()
     .url()
-    .notOneOf(rssFeeds.map(({ link }) => link));
+    .notOneOf(feeds);
 
   return schema.validate(inputUrl);
 };
@@ -93,6 +91,7 @@ const app = async () => {
     fetchingData,
     rssForm,
     modal,
+    rssFeeds,
     rssPosts,
     uiState,
   } = state;
@@ -102,7 +101,8 @@ const app = async () => {
     state.fetchingData.state = 'waiting';
     const formData = new FormData(e.target);
     const url = formData.get('url');
-    validate(url, state)
+    const feeds = rssFeeds.map(({ link }) => link);
+    validate(url, feeds)
       .then(() => {
         rssForm.state = 'valid';
         rssForm.error = null;
