@@ -29,7 +29,7 @@ const renderFetchingDataFeedback = ({ feedbackEl }, value, i18nextInstance) => {
       feedbackEl.classList.remove('text-success');
       feedbackEl.classList.remove('text-warning');
       feedbackEl.classList.add('text-danger');
-      feedbackEl.innerHTML = '';
+      // feedbackEl.innerHTML = '';
       break;
     case 'loading':
       feedbackEl.classList.remove('text-success');
@@ -96,12 +96,13 @@ const renderPosts = ({ postsContainer }, value, i18nextInstance) => {
   cardBorder.append(cardBody);
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounder-0');
-  value.map((post) => {
+  value.forEach((post) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
     const a = document.createElement('a');
     a.setAttribute('href', post.link);
-    a.classList.add(post.viewed ? ['fw-normal', 'link-secondary'] : 'fw-bold');
+    a.classList.add(post.viewed ? 'fw-normal' : 'fw-bold');
+    a.classList.add(post.viewed ? 'link-secondary' : 'fw-bold');
     a.setAttribute('data-id', post.id);
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
@@ -120,7 +121,6 @@ const renderPosts = ({ postsContainer }, value, i18nextInstance) => {
     button.textContent = i18nextInstance.t('posts.button');
     li.append(button);
     ul.prepend(li);
-    return ul;
   });
   cardBorder.append(ul);
   postsContainer.append(cardBorder);
