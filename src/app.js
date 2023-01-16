@@ -1,8 +1,6 @@
 import onChange from 'on-change';
-import i18next from 'i18next';
 import axios from 'axios';
 import * as yup from 'yup';
-import resources from './locales/index.js';
 import render from './view';
 import {
   fetchData,
@@ -42,16 +40,8 @@ const handleError = (error) => {
   return error.message;
 };
 
-const app = async () => {
+const app = (i18nextInstance) => {
   const refreshTime = 5000;
-
-  const defaultLanguage = 'ru';
-  const i18nextInstance = i18next.createInstance();
-  await i18nextInstance.init({
-    lng: defaultLanguage,
-    debug: false,
-    resources,
-  });
 
   const initialState = {
     rssForm: {
