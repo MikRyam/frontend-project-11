@@ -5,42 +5,32 @@ const renderError = ({ feedbackEl }, error, i18nextInstance) => {
   }
 };
 
-const renderState = (elements, state) => {
-  switch (state) {
-    case 'valid':
-      elements.input.classList.remove('is-invalid');
-      elements.feedbackEl.innerHTML = '';
-      break;
-    case 'ready':
-      elements.form.reset();
-      elements.input.focus();
-      break;
-    case 'invalid':
-      elements.input.classList.add('is-invalid');
-      break;
-    default:
-      throw new Error(`Unknown process state: ${state}`);
-  }
-};
-
-const renderFetchingDataFeedback = ({ feedbackEl }, value, i18nextInstance) => {
+const renderState = ({ feedbackEl, form, input }, value, i18nextInstance) => {
   switch (value) {
-    case 'waiting':
+    case 'ready':
+      form.reset();
+      input.focus();
+      break;
+    case 'validating':
       feedbackEl.classList.remove('text-success');
       feedbackEl.classList.remove('text-warning');
       feedbackEl.classList.add('text-danger');
-      // feedbackEl.innerHTML = '';
+      break;
+    case 'valid':
+      input.classList.remove('is-invalid');
+      feedbackEl.innerHTML = '';
+      break;
+    case 'invalid':
+      input.classList.add('is-invalid');
+      feedbackEl.classList.remove('text-success');
+      feedbackEl.classList.remove('text-warning');
+      feedbackEl.classList.add('text-danger');
       break;
     case 'loading':
       feedbackEl.classList.remove('text-success');
       feedbackEl.classList.remove('text-danger');
       feedbackEl.classList.add('text-warning');
       feedbackEl.textContent = i18nextInstance.t('form.feedback.loading');
-      break;
-    case 'failed':
-      feedbackEl.classList.remove('text-success');
-      feedbackEl.classList.remove('text-warning');
-      feedbackEl.classList.add('text-danger');
       break;
     case 'success':
       feedbackEl.classList.remove('text-danger');
@@ -141,14 +131,11 @@ const renderViewedPosts = (viewedPostIds) => {
 
 const render = (elements, initialState, i18nextInstance) => (path, value) => {
   switch (path) {
-    case 'rssForm.state':
-      renderState(elements, value);
+    case 'rssForm.addingNewFeedState':
+      renderState(elements, value, i18nextInstance);
       break;
     case 'rssForm.error':
       renderError(elements, value, i18nextInstance);
-      break;
-    case 'fetchingData.state':
-      renderFetchingDataFeedback(elements, value, i18nextInstance);
       break;
     case 'rssFeeds':
       renderFeeds(elements, value, i18nextInstance);

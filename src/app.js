@@ -45,11 +45,8 @@ const app = (i18nextInstance) => {
 
   const initialState = {
     rssForm: {
-      state: 'ready', // ready, filling, valid, invalid
+      addingNewFeedState: 'ready', // ready, validating, valid, invalid, loading, success
       error: null,
-    },
-    fetchingData: {
-      state: 'waiting', // waiting, loading, success, failed
     },
     rssFeeds: [],
     rssPosts: [],
@@ -78,7 +75,6 @@ const app = (i18nextInstance) => {
   const state = onChange(initialState, render(elements, initialState, i18nextInstance));
 
   const {
-    fetchingData,
     rssForm,
     modal,
     rssFeeds,
@@ -88,27 +84,26 @@ const app = (i18nextInstance) => {
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
-    state.fetchingData.state = 'waiting';
+    rssForm.addingNewFeedState = 'validating';
     const formData = new FormData(e.target);
     const url = formData.get('url');
     const feeds = rssFeeds.map(({ link }) => link);
     validate(url, feeds)
       .then(() => {
-        rssForm.state = 'valid';
+        rssForm.addingNewFeedState = 'valid';
         rssForm.error = null;
-        fetchingData.state = 'loading';
+        rssForm.addingNewFeedState = 'loading';
         return fetchData(url);
       })
       .then((response) => {
         const data = parseData(response.data.contents);
         handleData(data, state, url);
-        fetchingData.state = 'success';
-        rssForm.state = 'ready';
+        rssForm.addingNewFeedState = 'success';
+        rssForm.addingNewFeedState = 'ready';
       })
       .catch((error) => {
         rssForm.error = handleError(error);
-        rssForm.state = 'invalid';
-        fetchingData.state = 'failed';
+        rssForm.addingNewFeedState = 'invalid';
       });
   });
 
